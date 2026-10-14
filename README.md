@@ -1,1 +1,661 @@
-# exploradores-conocimiento
+[index.html](https://github.com/user-attachments/files/33442628/index.html)
+# exploradores-conocimiento<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎮 Exploradores de Conocimientos Secretos 🧮</title>
+  
+  <!-- Fuentes de Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #110826;
+      --bg-gradient-start: #2D1452;
+      --bg-card: #1d0f3b;
+      --gold: #FFE135;
+      --silver: #C0C0C0;
+      --bronze: #CD7F32;
+      --accent-pink: #ff007f;
+      --accent-cyan: #00f0ff;
+      --text-light: #ffffff;
+      --border-pixel: 4px double #FFE135;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-dark));
+      background-attachment: fixed;
+      color: var(--text-light);
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .arcade-title {
+      font-family: 'Press Start 2P', cursive;
+      color: var(--gold);
+      text-shadow: 3px 3px 0px #000;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(0,0,0,0.4);
+      border: var(--border-pixel);
+      box-shadow: 0 0 15px rgba(255, 225, 53, 0.3);
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.6rem;
+      color: var(--accent-cyan);
+    }
+
+    .pixel-card {
+      background: var(--bg-card);
+      border: 3px solid #3d2070;
+      box-shadow: 4px 4px 0px #000;
+      padding: 20px;
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .pixel-card-gold {
+      border: var(--border-pixel);
+      box-shadow: 0 0 15px rgba(255, 225, 53, 0.5), 4px 4px 0px #000;
+      background: linear-gradient(180deg, #2d1754 0%, #1d0f3b 100%);
+    }
+
+    /* Panel de Misiones */
+    .mission-panel h2 {
+      font-size: 0.8rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mission-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .mission-item {
+      background: rgba(0,0,0,0.3);
+      padding: 12px;
+      border-left: 4px solid var(--accent-cyan);
+    }
+
+    .mission-item label {
+      display: block;
+      color: var(--silver);
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .mission-item span {
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    /* Tabla / Hall de la Fama */
+    .hall-title {
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .student-card {
+      display: grid;
+      grid-template-columns: 50px 1fr 120px;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      margin-bottom: 12px;
+      background: rgba(0,0,0,0.25);
+      border: 2px solid #3d2070;
+      transition: transform 0.2s;
+    }
+
+    .student-card:hover {
+      transform: translateX(5px);
+    }
+
+    .rank-badge {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem;
+      text-align: center;
+      color: var(--silver);
+    }
+
+    .rank-1 .rank-badge { color: var(--gold); font-size: 1.2rem; }
+    .rank-2 .rank-badge { color: var(--silver); }
+    .rank-3 .rank-badge { color: var(--bronze); }
+
+    .student-info .name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .student-stats {
+      display: flex;
+      gap: 15px;
+      font-size: 1rem;
+      color: #aaa;
+      margin-top: 5px;
+    }
+
+    .progress-bar-container {
+      margin-top: 8px;
+      background: #000;
+      height: 12px;
+      border: 1px solid #555;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .level-badge {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.6rem;
+      background: var(--accent-pink);
+      padding: 6px 8px;
+      text-align: center;
+      border-radius: 2px;
+    }
+
+    /* Panel de Admin */
+    .admin-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 12px 18px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.6rem;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000;
+      z-index: 1000;
+    }
+
+    .admin-drawer {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 450px;
+      height: 100vh;
+      background: var(--bg-dark);
+      border-left: var(--border-pixel);
+      box-shadow: -5px 0 20px rgba(0,0,0,0.8);
+      z-index: 1001;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .admin-drawer.open {
+      display: block;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 10px;
+    }
+
+    .admin-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: #1d0f3b;
+      border: 1px solid #3d2070;
+      color: #fff;
+      padding: 8px 12px;
+      font-family: 'VT323', monospace;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--gold);
+      color: #000;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: #000;
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      font-family: 'VT323', monospace;
+      font-size: 1.2rem;
+    }
+
+    .btn-action {
+      background: var(--accent-cyan);
+      color: #000;
+      border: none;
+      padding: 12px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.6rem;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #000;
+    }
+
+    .btn-danger {
+      background: #ff2a2a;
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .student-card {
+        grid-template-columns: 35px 1fr;
+      }
+      .level-badge {
+        grid-column: span 2;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>🎮 EXPLORADORES DE CONOCIMIENTOS SECRETOS 🧮</h1>
+      <p>🐺 Hall de la Fama & Registro de Misiones 🏆</p>
+    </header>
+
+    <!-- PANEL DE MISIONES -->
+    <div class="pixel-card mission-panel">
+      <h2><i class="fa-solid fa-scroll"></i> PANEL DE MISIONES</h2>
+      <div class="mission-grid">
+        <div class="mission-item">
+          <label>📜 Misión Actual</label>
+          <span id="display-mision-actual">Cargando...</span>
+        </div>
+        <div class="mission-item">
+          <label>⏳ Fecha Límite (+100 EXP)</label>
+          <span id="display-fecha-limite">Cargando...</span>
+        </div>
+        <div class="mission-item">
+          <label>🔮 Próxima Misión</label>
+          <span id="display-proxima-mision">Cargando...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HALL DE LA FAMA -->
+    <div class="pixel-card pixel-card-gold">
+      <h2 class="hall-title">🏆 HALL DE LA FAMA 🏆</h2>
+      <div id="hall-of-fame">
+        <!-- Renderizado con JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN MODO ADMIN -->
+  <button class="admin-toggle" onclick="toggleAdmin()"><i class="fa-solid fa-lock"></i> MODO DOCENTE</button>
+
+  <!-- PANEL LATERAL DOCENTE -->
+  <div class="admin-drawer" id="admin-drawer">
+    <div class="admin-header">
+      <h3 style="font-size:0.7rem;">🔐 ADMINISTRACIÓN</h3>
+      <button onclick="toggleAdmin()" style="background:none; border:none; color:#fff; cursor:pointer;"><i class="fa-solid fa-xmark fa-xl"></i></button>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div id="admin-login">
+      <label>Clave de Acceso:</label>
+      <input type="password" id="admin-pass" placeholder="Ingresa la clave">
+      <button class="btn-action" onclick="loginAdmin()">ENTRAR</button>
+    </div>
+
+    <!-- CONTENIDO ADMIN (OCULTO HASTA LOGIN) -->
+    <div id="admin-panel" style="display: none;">
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-guias')">⚡ Guías</button>
+        <button class="tab-btn" onclick="switchTab('tab-misiones')">📜 Misiones</button>
+        <button class="tab-btn" onclick="switchTab('tab-alumnos')">➕ Alumnos</button>
+        <button class="tab-btn" onclick="switchTab('tab-ajustes')">⚙️ Ajustes</button>
+      </div>
+
+      <!-- TAB 1: REGISTRAR GUÍA -->
+      <div id="tab-guias" class="tab-content active">
+        <label>Seleccionar Estudiante:</label>
+        <select id="select-estudiante"></select>
+        <button class="btn-action" onclick="registrarGuia()">+100 EXP por Guía Entregada</button>
+      </div>
+
+      <!-- TAB 2: CONFIGURAR MISIONES -->
+      <div id="tab-misiones" class="tab-content">
+        <label>Misión Actual:</label>
+        <input type="text" id="input-mision-actual">
+        <label>Fecha Límite:</label>
+        <input type="text" id="input-fecha-limite">
+        <label>Próxima Misión:</label>
+        <input type="text" id="input-proxima-mision">
+        <button class="btn-action" onclick="guardarMisiones()">GUARDAR MISIONES</button>
+      </div>
+
+      <!-- TAB 3: AGREGAR ALUMNOS -->
+      <div id="tab-alumnos" class="tab-content">
+        <label>Ingreso Masivo (Un estudiante por línea):</label>
+        <textarea id="input-lista-masiva" rows="8"></textarea>
+        <button class="btn-action" onclick="cargarListaMasiva()">CARGAR LISTA</button>
+      </div>
+
+      <!-- TAB 4: AJUSTES & GOOGLE SHEETS -->
+      <div id="tab-ajustes" class="tab-content">
+        <label>URL Webhook de Google Sheets (Opcional):</label>
+        <input type="text" id="input-sheets-url" placeholder="https://script.google.com/macros/s/...">
+        <button class="btn-action" onclick="guardarSheetUrl()" style="margin-bottom:20px;">GUARDAR URL</button>
+        
+        <button class="btn-action btn-danger" onclick="resetearTodo()">💥 BORRAR TODO Y REINICIAR</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // LISTA DE BASE DE DATOS INICIAL (LoBulnes_BD)
+    const dbInicial = [
+      "Acevedo Rodriguez Máximo Ignacio", "Cabion Cuevas Luciana Goretti", "Cabrera Sánchez Mia Pascal", 
+      "Castillo Aldea Josefa Antonia", "Castillo Escobar Mateo León", "Castro Hernández Dilan Angelo", 
+      "Díaz Verdugo Trinidad Antonia", "Fernández Melgar Alfredo Danilo", "Gonzalez Pulgar Sophia Cattleya", 
+      "Grimaldos Gómez Maximiliano Gabriel", "Harder Araya Fiorella Anaís", "Humeres Herrera Esteban Daniel", 
+      "Loyola Orbegoso Santiago Sebastian", "Luza Villca Joaquín Elías Sebastián", "Mateo Barahona Benjamín Ignacio", 
+      "Ortiz Briceño Ariadne Monserrat", "Perez Henriquez Amy Victoria", "Rivera Rivera Isidora Amanda", 
+      "Rivera Rivera José Miguel", "Rodríguez Malebran Antuan Bless", "Sanchez Martinez Thiago Ghael", 
+      "Sepúlveda Ortega Joaquín Luciano", "Sepúlveda Sciaraffia Julieta Paz", "Severiche Klapp Máximo Isaac", 
+      "Simpertigue Morgado Isidora Sofía", "Tapia Sánchez Amanda Paz", "Urrutia Zúñiga Catalina Soledad", 
+      "Valenzuela Vidal Isidora Paz", "Viza Macedo Ostin Dilan", "Álvarez Chávez Martina Fernanda", 
+      "Cabello Rojas Ignacia Pascal", "Castillo Sandoval Francisca Antonia", "Díaz Ruiz Tomás Eduardo", 
+      "Duque Lira Daniel Alfonso", "Duque Lira Víctor Alonso", "Espinoza Ospina Dylan Rodrígo", 
+      "Fernández Navarro Florencia Issidora", "Gaete Meza Antonia Sofía", "Gaete Meza Maximiliano León", 
+      "García Becerra Essays Alonso", "Garcia Flores Bryanna Yamileth", "Gómez Lioi Máximo Miguel Antonio", 
+      "González Mora Valentino Ricardo", "Jiménez Valenzuela Maycol Ignacio", "López Ampuero Colomba Pascal", 
+      "Martinez Orellana Matilde Isidora", "Martínez Perez Tomás Benjamín", "Olmos Mamani Andree Valentín", 
+      "Orchard Mollo Lisseth Emilia", "Poblete Sepúlveda Alfredo Antonio", "Reyes Soto Thiago Damián", 
+      "Rojas Muñoz Benjamín Sebastián", "Rojas Quiroga Luciano León", "Rojas Rivas Sebastián Andrés", 
+      "Rubio Donoso Florencia Pascal", "Sanzana Cayo Daniel Alexis", "Silva Lazo Constanza Pilar", 
+      "Tarazona Chupica Adriana Samira", "Vicuña Chavez Sofia Isabella", "Zegarra Dinamarca Hector Emilio"
+    ];
+
+    let estudiantes = [];
+    let misiones = {
+      actual: "Guía N°1: Evaluación Diagnóstica de Matemática",
+      limite: "Viernes 24 de Octubre - 14:00 hrs",
+      proxima: "Guía N°2: Operaciones Combinadas"
+    };
+    let webhookUrl = "";
+
+    // Inicialización
+    window.onload = function() {
+      cargarLocalStorage();
+      renderHall();
+      renderMisiones();
+      cargarSelectorEstudiantes();
+    };
+
+    function cargarLocalStorage() {
+      const estLocal = localStorage.getItem('exploradores_estudiantes');
+      if (estLocal) {
+        estudiantes = JSON.parse(estLocal);
+      } else {
+        // Cargar por defecto la base de datos LoBulnes_BD
+        estudiantes = dbInicial.map((nombre, i) => ({
+          uid: `NFC_${String(i+1).padStart(3, '0')}`,
+          nombre: nombre,
+          exp: 0,
+          guias: 0
+        }));
+        guardarEstudiantes();
+      }
+
+      const misLocal = localStorage.getItem('exploradores_misiones');
+      if (misLocal) misiones = JSON.parse(misLocal);
+
+      const urlLocal = localStorage.getItem('exploradores_webhook');
+      if (urlLocal) {
+        webhookUrl = urlLocal;
+        document.getElementById('input-sheets-url').value = webhookUrl;
+      }
+    }
+
+    function guardarEstudiantes() {
+      localStorage.setItem('exploradores_estudiantes', JSON.stringify(estudiantes));
+      syncGoogleSheets();
+    }
+
+    function renderHall() {
+      // Ordenar por EXP desc y luego por Guías
+      estudiantes.sort((a, b) => b.exp - a.exp || b.guias - a.guias);
+      
+      const hallContainer = document.getElementById('hall-of-fame');
+      hallContainer.innerHTML = '';
+
+      estudiantes.forEach((e, index) => {
+        const nivel = Math.floor(e.exp / 500) + 1;
+        const expRestante = e.exp % 500;
+        const porcentaje = (expRestante / 500) * 100;
+
+        let rankClass = '';
+        let rankIcon = `#${index + 1}`;
+        if (index === 0) { rankClass = 'rank-1'; rankIcon = '🥇 LÍDER'; }
+        else if (index === 1) { rankClass = 'rank-2'; rankIcon = '🥈'; }
+        else if (index === 2) { rankClass = 'rank-3'; rankIcon = '🥉'; }
+
+        const card = document.createElement('div');
+        card.className = `student-card ${rankClass}`;
+        card.innerHTML = `
+          <div class="rank-badge">${rankIcon}</div>
+          <div class="student-info">
+            <div class="name">${e.nombre}</div>
+            <div class="student-stats">
+              <span>⚡ ${e.exp} EXP</span>
+              <span>📜 ${e.guias} Guías</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" style="width: ${porcentaje}%"></div>
+            </div>
+          </div>
+          <div class="level-badge">NIVEL ${nivel}</div>
+        `;
+        hallContainer.appendChild(card);
+      });
+    }
+
+    function renderMisiones() {
+      document.getElementById('display-mision-actual').innerText = misiones.actual;
+      document.getElementById('display-fecha-limite').innerText = misiones.limite;
+      document.getElementById('display-proxima-mision').innerText = misiones.proxima;
+
+      document.getElementById('input-mision-actual').value = misiones.actual;
+      document.getElementById('input-fecha-limite').value = misiones.limite;
+      document.getElementById('input-proxima-mision').value = misiones.proxima;
+    }
+
+    function cargarSelectorEstudiantes() {
+      const select = document.getElementById('select-estudiante');
+      select.innerHTML = '';
+      // Ordenar alfabéticamente para el selector
+      const nombresOrdenados = [...estudiantes].sort((a,b) => a.nombre.localeCompare(b.nombre));
+      nombresOrdenados.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value = e.nombre;
+        opt.innerText = e.nombre;
+        select.appendChild(opt);
+      });
+    }
+
+    /* ACCIONES DOCENTE */
+    function registrarGuia() {
+      const nombre = document.getElementById('select-estudiante').value;
+      const est = estudiantes.find(e => e.nombre === nombre);
+      if (est) {
+        est.exp += 100;
+        est.guias += 1;
+        guardarEstudiantes();
+        renderHall();
+
+        // Confeti
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    function guardarMisiones() {
+      misiones.actual = document.getElementById('input-mision-actual').value;
+      misiones.limite = document.getElementById('input-fecha-limite').value;
+      misiones.proxima = document.getElementById('input-proxima-mision').value;
+      
+      localStorage.setItem('exploradores_misiones', JSON.stringify(misiones));
+      renderMisiones();
+      alert("¡Misiones actualizadas!");
+    }
+
+    function cargarListaMasiva() {
+      const texto = document.getElementById('input-lista-masiva').value;
+      const lineas = texto.split('\n').filter(l => l.trim() !== '');
+      
+      lineas.forEach(linea => {
+        const nombre = linea.trim();
+        if (!estudiantes.some(e => e.nombre === nombre)) {
+          estudiantes.push({
+            uid: `NFC_${String(estudiantes.length + 1).padStart(3, '0')}`,
+            nombre: nombre,
+            exp: 0,
+            guias: 0
+          });
+        }
+      });
+
+      guardarEstudiantes();
+      renderHall();
+      cargarSelectorEstudiantes();
+      document.getElementById('input-lista-masiva').value = '';
+      alert("Lista cargada con éxito.");
+    }
+
+    function guardarSheetUrl() {
+      webhookUrl = document.getElementById('input-sheets-url').value;
+      localStorage.setItem('exploradores_webhook', webhookUrl);
+      alert("URL del Webhook guardada.");
+      syncGoogleSheets();
+    }
+
+    function syncGoogleSheets() {
+      if (!webhookUrl) return;
+      
+      const payload = {
+        action: "syncAll",
+        students: estudiantes.map(e => ({
+          uid: e.uid,
+          nombre: e.nombre,
+          guias: e.guias,
+          exp: e.exp,
+          nivel: Math.floor(e.exp / 500) + 1,
+          lastScan: new Date().toISOString()
+        }))
+      };
+
+      fetch(webhookUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.log("Error al sincronizar con Sheets:", err));
+    }
+
+    function resetearTodo() {
+      if (confirm("¿Estás seguro de reiniciar todos los datos? Se borrarán los progresos.")) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    /* CONTROL DE ADMIN & TABS */
+    function toggleAdmin() {
+      const drawer = document.getElementById('admin-drawer');
+      drawer.classList.toggle('open');
+    }
+
+    function loginAdmin() {
+      const pass = document.getElementById('admin-pass').value;
+      if (pass === "lobulnes2026") {
+        document.getElementById('admin-login').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+      } else {
+        alert("Clave incorrecta.");
+      }
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
